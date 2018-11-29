@@ -1,0 +1,63 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int steadyGene(string gene) {
+
+    int n = gene.size();
+    int m = n/4;
+    map <char,int> a;
+
+    for(int i=0; i<n; i++) {
+        a[gene[i]]++;
+    }
+
+    cout<<a['A']<<" "<<a['C']<<" "<<a['G']<<" "<<a['T']<<" "<<m<<endl;
+
+    int l, r=0;
+    int len, mini = n;
+    for(int l=0; l<n; l++) {
+        while((a['A']>m || a['C']>m || a['G']>m || a['T']>m) && r<n && a[gene[r]] >= 0) {
+            a[gene[r]]--;
+            r++;
+        }
+
+        if(r == n)
+            break;
+
+        if(r == 0) {
+            mini = 0;
+            break;
+        }    
+
+        len = r-l;
+        if(len > 0 && len < mini)
+            mini = len;
+
+        a[gene[l]]++;
+
+        cout<<l<<" "<<r<<endl;
+    }
+
+    return mini;
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    int n;
+    cin >> n;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    string gene;
+    getline(cin, gene);
+
+    int result = steadyGene(gene);
+
+    fout << result << "\n";
+
+    fout.close();
+
+    return 0;
+}
